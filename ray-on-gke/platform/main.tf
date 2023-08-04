@@ -43,7 +43,6 @@ provider "kubectl" {
 
 provider "helm" {
   kubernetes {
-    ##config_path = pathexpand("~/.kube/config")
     host  = data.google_container_cluster.ml_cluster.endpoint
     token = data.google_client_config.provider.access_token
     cluster_ca_certificate = base64decode(

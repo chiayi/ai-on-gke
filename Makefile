@@ -58,27 +58,42 @@ get-jupyter-ip: NAMESPACE ?= ray-jupy
 get-jupyter-ip:
 	kubectl get svc proxy-public --namespace=$(NAMESPACE) -o jsonpath="{.status.loadBalancer.ingress[0].ip}" && echo "\n"
 
+<<<<<<< HEAD
 destroy-everything: SA-ACCOUNT-NAME ?= ray-jupy
 destroy-everything: NAMESPACE ?= ray
 destroy-everything: 
 	$(MAKE) delete-jupyterhub \
 	&& $(MAKE) delete-user-resource NAMESPACE=$(NAMESPACE) SA-ACCOUNT-NAME=$(SA-ACCOUNT-NAME) \
+=======
+destroy-everything: 
+	$(MAKE) delete-jupyterhub \
+	&& $(MAKE) delete-user-resource \
+>>>>>>> db00f47 (Refactor jupyterhub and add Makefile, gitignore)
 	&& $(MAKE) delete-cluster 
 
 delete-cluster: 
 	cd ./ray-on-gke/platform/ && terraform destroy -auto-approve
 
+<<<<<<< HEAD
 delete-user-resource: SA-ACCOUNT-NAME ?= ray-jupy
 delete-user-resource: NAMESPACE ?= ray
 delete-user-resource:
 	cd ./ray-on-gke/user/ && terraform destroy -auto-approve -var namespace=$(NAMESPACE) -var service_account=$(SA-ACCOUNT-NAME)
+=======
+delete-user-resource:
+	cd ./ray-on-gke/user/ && terraform destroy -auto-approve
+>>>>>>> db00f47 (Refactor jupyterhub and add Makefile, gitignore)
 
 delete-jupyterhub:
 	cd ./ray-on-gke/user/jupyterhub && terraform destroy -auto-approve
 
 clean-tfstate: TF-DIR ?= platform
 clean-tfstate:
+<<<<<<< HEAD
 	cd ./ray-on-gke/$(TF-DIR)/ && rm terraform.tfstate terraform.tfstate.backup
+=======
+	cd ./ray-on-gke/$(TF-Dir)/ && rm terraform.tfstate terraform.tfstate.backup
+>>>>>>> db00f47 (Refactor jupyterhub and add Makefile, gitignore)
 
 test-stuff:
 	echo "testing 123" && echo "here" && kubectl get svc proxy-public -o jsonpath="{.status.loadBalancer.ingress[0].ip}" && echo 

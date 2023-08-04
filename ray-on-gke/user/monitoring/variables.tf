@@ -21,5 +21,11 @@ variable "project_id" {
 variable "namespace" {
   type        = string
   description = "Kubernetes namespace where resources are deployed"
-  default     = "ray"
+  default     = "<your user name>"
+}
+
+variable "enable_create_namespace" {
+  type = bool
+  description = "Enable creation of jupyterhub namespace if it does not exist"
+  default = false
 }

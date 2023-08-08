@@ -41,17 +41,17 @@ scheduling:
     enabled: false
 
 singleuser:
-  cpu:
+  memory:
     limit: 1G
     guarantee: 1G
-  memory:
+  cpu:
     limit: .5
     guarantee: .5
   nodeSelector:
     iam.gke.io/gke-metadata-server-enabled: "true"
   image:
-    name: <image-name>
-    tag: <tag>
+    name: jupyter/tensorflow-notebook
+    tag: python-3.10
   startTimeout: 700
 # More info on kubespawner overrides: https://jupyterhub-kubespawner.readthedocs.io/en/latest/spawner.html#kubespawner.KubeSpawner
 #   profile example:

@@ -56,9 +56,11 @@ Preinstall the following on your computer:
 
 4. Get the GKE cluster name and location/region from `platform/variables.tf`.
    Run `gcloud container clusters get-credentials %gke_cluster_name% --location=%location%`
-   Configuring `gcloud` [instructions](https://cloud.google.com/sdk/docs/initializing)
+   Configuring `gcloud`. [instructions](https://cloud.google.com/sdk/docs/initializing)
 
 5. Run `terraform apply`
+
+> **_NOTE:_** Before running JupyterHub or Monitoring, run `gcloud container clusters get-credentials %gke_cluster_name% --location=%location%` and configure `gcloud` [instructions](https://cloud.google.com/sdk/docs/initializing)
 
 ### JupyterHub
 
@@ -71,6 +73,16 @@ Preinstall the following on your computer:
 4. Run `terraform init`
 
 5. Run `terraform apply`
+
+### Monitoring
+
+1. `cd user/monitoring`
+
+2. Edit `variable.tf` with your GCP settings. 
+
+3. Run `terraform init`
+
+4. Run `terraform apply`
 
 ## Using Ray with Jupyter
 

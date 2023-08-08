@@ -49,11 +49,3 @@ module "kuberay" {
   depends_on = [module.kubernetes]
   namespace  = var.namespace
 }
-
-module "prometheus" {
-  source = "./modules/prometheus"
-
-  depends_on = [module.kuberay]
-  project_id = var.project_id
-  namespace  = var.namespace
-}

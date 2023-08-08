@@ -50,10 +50,10 @@ module "kuberay" {
   namespace  = var.namespace
 }
 
-module "prometheus" {
-  source = "./modules/prometheus"
+# module "prometheus" {
+#   source = "./modules/prometheus"
 
-  depends_on = [module.kuberay]
-  project_id = var.project_id
-  namespace  = var.namespace
-}
+#   depends_on = [module.kuberay]
+#   project_id = var.project_id
+#   namespace  = var.namespace
+# }

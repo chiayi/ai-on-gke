@@ -54,10 +54,19 @@ build-jupyterhub:
 	&& echo "IP of JupyterHub Ednpoint" \
 	&& cd ../../../ && $(MAKE) get-jupyter-ip NAMESAPCE=$(NAMESPACE)
 
+add-monitoring: PROJECT ?= $(shell $(current-project))
+add-monitoring: NAMESPACE ?= ray
+add-monitoring:
+	cd ./ray-on-gke/user/monitoring/ \
+	&& terraform apply -auto-approve \
+	-var project_id=$(PROJECT) \
+	-var namespace=$(NAMESPACE) 
+
 get-jupyter-ip: NAMESPACE ?= ray-jupy
 get-jupyter-ip:
 	kubectl get svc proxy-public --namespace=$(NAMESPACE) -o jsonpath="{.status.loadBalancer.ingress[0].ip}" && echo "\n"
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 destroy-everything: SA-ACCOUNT-NAME ?= ray-jupy
 destroy-everything: NAMESPACE ?= ray
@@ -69,11 +78,19 @@ destroy-everything:
 	$(MAKE) delete-jupyterhub \
 	&& $(MAKE) delete-user-resource \
 >>>>>>> db00f47 (Refactor jupyterhub and add Makefile, gitignore)
+=======
+destroy-everything: SA-ACCOUNT-NAME ?= ray-jupy
+destroy-everything: NAMESPACE ?= ray
+destroy-everything: 
+	$(MAKE) delete-jupyterhub \
+	&& $(MAKE) delete-user-resource NAMESPACE=$(NAMESPACE) SA-ACCOUNT-NAME=$(SA-ACCOUNT-NAME) \
+>>>>>>> 1896d79 (Refactor prometheus monitoring)
 	&& $(MAKE) delete-cluster 
 
 delete-cluster: 
 	cd ./ray-on-gke/platform/ && terraform destroy -auto-approve
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 delete-user-resource: SA-ACCOUNT-NAME ?= ray-jupy
 delete-user-resource: NAMESPACE ?= ray
@@ -83,6 +100,12 @@ delete-user-resource:
 delete-user-resource:
 	cd ./ray-on-gke/user/ && terraform destroy -auto-approve
 >>>>>>> db00f47 (Refactor jupyterhub and add Makefile, gitignore)
+=======
+delete-user-resource: SA-ACCOUNT-NAME ?= ray-jupy
+delete-user-resource: NAMESPACE ?= ray
+delete-user-resource:
+	cd ./ray-on-gke/user/ && terraform destroy -auto-approve -var namespace=$(NAMESPACE) -var service_account=$(SA-ACCOUNT-NAME)
+>>>>>>> 1896d79 (Refactor prometheus monitoring)
 
 delete-jupyterhub:
 	cd ./ray-on-gke/user/jupyterhub && terraform destroy -auto-approve
@@ -90,10 +113,14 @@ delete-jupyterhub:
 clean-tfstate: TF-DIR ?= platform
 clean-tfstate:
 <<<<<<< HEAD
+<<<<<<< HEAD
 	cd ./ray-on-gke/$(TF-DIR)/ && rm terraform.tfstate terraform.tfstate.backup
 =======
 	cd ./ray-on-gke/$(TF-Dir)/ && rm terraform.tfstate terraform.tfstate.backup
 >>>>>>> db00f47 (Refactor jupyterhub and add Makefile, gitignore)
+=======
+	cd ./ray-on-gke/$(TF-DIR)/ && rm terraform.tfstate terraform.tfstate.backup
+>>>>>>> 1896d79 (Refactor prometheus monitoring)
 
 test-stuff:
 	echo "testing 123" && echo "here" && kubectl get svc proxy-public -o jsonpath="{.status.loadBalancer.ingress[0].ip}" && echo 

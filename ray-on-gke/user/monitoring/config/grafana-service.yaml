@@ -4,7 +4,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,17 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-<<<<<<<< HEAD:applications/ray/raytrain-examples/raytrain-with-gcsfusecsi/kuberaytf/user/modules/kuberay/variables.tf
-========
-variable "project_id" {
-  type        = string
-  description = "GCP project id"
-  default     = "<your user name>"
-}
-
->>>>>>>> d3d76b8 (Refactor prometheus monitoring):ray-on-gke/user/monitoring/variables.tf
-variable "namespace" {
-  type        = string
-  description = "Kubernetes namespace where resources are deployed"
-  default     = "example"
-}
+apiVersion: v1
+kind: Service
+metadata:
+  name: sax-http-lb
+spec:
+  selector:
+    app: sax-http
+  ports:
+  - protocol: TCP
+    port: 8888
+    targetPort: 8888
+  type: LoadBalancer

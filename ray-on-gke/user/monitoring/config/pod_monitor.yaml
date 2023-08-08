@@ -12,17 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-<<<<<<<< HEAD:applications/ray/raytrain-examples/raytrain-with-gcsfusecsi/kuberaytf/user/modules/kuberay/variables.tf
-========
-variable "project_id" {
-  type        = string
-  description = "GCP project id"
-  default     = "<your user name>"
+output "domain" {
+  value = module.jupyterhub.domain
 }
 
->>>>>>>> d3d76b8 (Refactor prometheus monitoring):ray-on-gke/user/monitoring/variables.tf
-variable "namespace" {
-  type        = string
-  description = "Kubernetes namespace where resources are deployed"
-  default     = "example"
+output "password" {
+  value     = module.jupyterhub.password
+  sensitive = true
 }

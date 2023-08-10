@@ -37,6 +37,8 @@ proxy:
   chp:
     networkPolicy:
       enabled: false
+  service:
+    type: NodePort
   traefik:
     networkPolicy:
       enabled: false

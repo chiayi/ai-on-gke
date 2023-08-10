@@ -5,7 +5,7 @@ init:
 	&& cd ./ray-on-gke/platform/ && terraform init \
 	&& cd ../user/ && terraform init \
 	&& cd ./monitoring && terraform init \
-	&& cd ./jupyterhub/ && terraform init 
+	&& cd ../jupyterhub && terraform init 
 
 gcloud-auth-cluster: 
 	gcloud container clusters get-credentials $(NAME) --location $(LOCATION)
@@ -36,7 +36,7 @@ create-cluster:
 	&& cd ../../ && $(MAKE) gcloud-auth-cluster NAME=$(NAME) LOCATION=$(LOCATION) 
 
 build-user: PROJECT ?= $(shell $(current-project))
-build-user: SA-ACCOUNT-NAME ?= ray-jupy
+build-user: SA-ACCOUNT-NAME ?= ray-sa
 build-user: NAMESPACE ?= ray
 build-user:
 	cd ./ray-on-gke/user/ && \
@@ -63,31 +63,38 @@ add-monitoring:
 	-var project_id=$(PROJECT) \
 	-var namespace=$(NAMESPACE) 
 
+build-kuberay: NAMESPACE ?= ray
+build-kuberay: 
+	cd ./ray-on-gke/user/kuberay/ \
+	&& terraform apply -auto-approve \
+	-var namespace=$(NAMESPACE) 
+
 get-jupyter-ip: NAMESPACE ?= ray
 get-jupyter-ip:
 	kubectl get svc proxy-public --namespace=$(NAMESPACE) -o jsonpath="{.status.loadBalancer.ingress[0].ip}" && echo "\n"
 
-destroy-everything: SA-ACCOUNT-NAME ?= ray-jupy
+destroy-everything: SA-ACCOUNT-NAME ?= ray-sa
 destroy-everything: NAMESPACE ?= ray
 destroy-everything: 
-	$(MAKE) delete-jupyterhub \
-	&& $(MAKE) delete-monitoring \
+	$(MAKE) delete-monitoring \
+	&& $(MAKE) delete-jupyterhub \
 	&& $(MAKE) delete-user-resource NAMESPACE=$(NAMESPACE) SA-ACCOUNT-NAME=$(SA-ACCOUNT-NAME) \
 	&& $(MAKE) delete-cluster 
 
 delete-cluster: 
-	cd ./ray-on-gke/platform/ && terraform destroy -auto-approve
+	cd ./ray-on-gke/platform/ && terraform destroy -auto-approve -var project_id=$(shell $(current-project))
 
-delete-user-resource: SA-ACCOUNT-NAME ?= ray-jupy
+delete-user-resource: SA-ACCOUNT-NAME ?= ray
 delete-user-resource: NAMESPACE ?= ray
 delete-user-resource:
 	cd ./ray-on-gke/user/ && terraform destroy -auto-approve -var namespace=$(NAMESPACE) -var service_account=$(SA-ACCOUNT-NAME)
 
-delete-monitoring: 
-	cd ./ray-on-gke/user/monitoring && terraform destroy -auto-approve
-
 delete-jupyterhub:
 	cd ./ray-on-gke/user/jupyterhub && terraform destroy -auto-approve
+
+delete-monitoring: PROJECT ?= $(shell $(current-project))
+delete-monitoring:
+	cd ./ray-on-gke/user/monitoring && terraform destroy -auto-approve -var project_id=$(PROJECT)
 
 clean-tfstate: TF-DIR ?= platform
 clean-tfstate:

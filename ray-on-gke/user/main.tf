@@ -43,9 +43,10 @@ module "service_accounts" {
   service_account = var.service_account
 }
 
-module "kuberay" {
-  source = "./modules/kuberay"
+# module "kuberay" {
+#   source = "./modules/kuberay"
 
-  depends_on = [module.kubernetes]
-  namespace  = var.namespace
-}
+#   depends_on = [module.kubernetes]
+#   namespace  = var.namespace
+# }
+

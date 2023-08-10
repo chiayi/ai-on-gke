@@ -12,6 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+provider "kubernetes" {
+  config_path = pathexpand("~/.kube/config")
+}
+
+provider "kubectl" {
+  config_path = pathexpand("~/.kube/config")
+}
+
+provider "helm" {
+  kubernetes {
+    config_path = pathexpand("~/.kube/config")
+  }
+}
+
+resource "helm_release" "kuberay-operator" {
+  name       = "kuberay-operator"
+  repository = "https://ray-project.github.io/kuberay-helm/"
+  chart      = "kuberay-operator"
+}
+
 resource "helm_release" "ray-cluster" {
   name       = "example-cluster"
   repository = "https://ray-project.github.io/kuberay-helm/"
@@ -20,4 +40,5 @@ resource "helm_release" "ray-cluster" {
   values = [
     file("${path.module}/kuberay-values.yaml")
   ]
+    depends_on = [kuberay-operator]
 }

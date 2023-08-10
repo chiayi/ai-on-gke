@@ -80,11 +80,3 @@ module "kubernetes" {
   cluster_name = var.cluster_name
   enable_autopilot = var.enable_autopilot
 }
-
-module "kuberay" {
-  source = "./modules/kuberay"
-
-  depends_on   = [module.gke_autopilot, module.gke_standard]
-  region       = var.region
-  cluster_name = var.cluster_name
-}

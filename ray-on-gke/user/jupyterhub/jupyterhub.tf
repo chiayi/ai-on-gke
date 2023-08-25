@@ -35,6 +35,7 @@ resource "helm_release" "jupyterhub" {
   cleanup_on_fail = "true"
 
   values = [
+    # file("${path.module}/jupyter_config/singleprofile-config.yaml")
     file("${path.module}/jupyter_config/config.yaml")
   ]
 }

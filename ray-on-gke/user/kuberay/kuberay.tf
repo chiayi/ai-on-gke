@@ -33,12 +33,12 @@ resource "helm_release" "kuberay-operator" {
 }
 
 resource "helm_release" "ray-cluster" {
-  name       = "example-cluster"
+  name       = "example-cluster2"
   repository = "https://ray-project.github.io/kuberay-helm/"
   chart      = "ray-cluster"
   namespace  = var.namespace
   values = [
     file("${path.module}/kuberay-values.yaml")
   ]
-    depends_on = [kuberay-operator]
+    depends_on = [helm_release.kuberay-operator]
 }

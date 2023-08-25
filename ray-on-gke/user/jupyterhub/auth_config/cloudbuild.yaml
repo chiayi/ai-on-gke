@@ -1,0 +1,7 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'pull', 'docker.io/jupyterhub/k8s-hub:3.0.0' ]
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-t', 'gcr.io/aaronliang-agones-gke-dev/k8s-hub', '.' ]
+images:
+- 'gcr.io/aaronliang-agones-gke-dev/k8s-hub'

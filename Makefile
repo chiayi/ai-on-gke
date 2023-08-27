@@ -23,7 +23,7 @@ plan:
 	-var enable_autopilot=$(AUTOPILOT) \
 
 create-cluster: PROJECT ?= $(shell $(current-project))
-create-cluster: LOCATION ?= us-central1
+create-cluster: LOCATION ?= us-central1-b
 create-cluster: NAME ?= ml-cluster
 create-cluster: AUTOPILOT ?= false
 create-cluster:

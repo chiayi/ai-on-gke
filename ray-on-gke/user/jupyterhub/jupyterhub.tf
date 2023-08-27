@@ -36,7 +36,7 @@ resource "helm_release" "jupyterhub" {
 
   values = [
     # file("${path.module}/jupyter_config/singleprofile-config.yaml")
-    file("${path.module}/jupyter_config/config.yaml")
+    file("${path.module}/jupyter_config/config-selfauth.yaml")
   ]
 }
 

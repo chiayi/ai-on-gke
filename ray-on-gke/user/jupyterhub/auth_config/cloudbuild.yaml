@@ -1,3 +1,4 @@
+# to build, run `gcloud builds submit --config cloudbuild.yaml .` in directory
 steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: [ 'pull', 'docker.io/jupyterhub/k8s-hub:3.0.0' ]

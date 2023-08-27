@@ -11,20 +11,13 @@ hub:
   image: 
     name: gcr.io/aaronliang-agones-gke-dev/k8s-hub
     tag: latest
-  # image: 
-  #   name: docker.io/jupyterhub/k8s-hub
-  #   tag: 3.0.0
   # config:
     # JupyterHub:
-    #   authenticator_class: 'jwtauthenticator.jwtauthenticator.JSONWebTokenAuthenticator'
+    #   authenticator_class: 'gcpiapjwtauthenticator.gcpiapjwtauthenticator.GCPIAPAuthenticator'
     # JSONWebTokenAuthenticator:
-    #   header_name: x-goog-iap-jwt-assertion
-    #   header_is_authorization: false
-    #   # create_system_users: true
+    #   header_name: X-Goog-Iap-Jwt-Assertion
     #   expected_audience: '/projects/1085966111635/global/backendServices/2826858781982675734'
-    #   # expected_audience: 'projects/aaronliang-agones-gke-dev/global/backendServices/k8s-be-30992--0c8bdd3fd93a99bb'
-    #   # expected_audience: 'https://www.googleapis.com/compute/v1/projects/aaronliang-agones-gke-dev/global/backendServices/k8s-be-30992--0c8bdd3fd93a99bb'
-    #   username_claim_field: email
+    #   template_to_render: 'welcome.html'
     #   # Retrieved from https://www.gstatic.com/iap/verify/public_key
     #   secret: |
     #     {
@@ -37,12 +30,12 @@ hub:
   extraConfig: 
     auth: |
       from urllib import request
-      c.JupyterHub.authenticator_class = 'jwtauthenticator.JSONWebTokenAuthenticator'
-      c.JSONWebTokenAuthenticator.header_name = 'X-Goog-Iap-Jwt-Assertion'
-      c.JSONWebTokenAuthenticator.expected_audience = '/projects/1085966111635/global/backendServices/2826858781982675734'
-      c.JSONWebTokenAuthenticator.username_claim_field = 'email'
-      c.JSONWebTokenLocalAuthenticator.secret = request.urlopen('https://www.gstatic.com/iap/verify/public_key').read()
-    # c.JSONWebTokenAuthenticator.secret = """
+      c.JupyterHub.authenticator_class = 'gcpiapjwtauthenticator.GCPIAPAuthenticator'
+      c.GCPIAPAuthenticator.header_name = 'X-Goog-IAP-JWT-Assertion'
+      c.GCPIAPAuthenticator.expected_audience = '/projects/1085966111635/global/backendServices/3398454410081248856'
+      c.GCPIAPAuthenticator.template_to_render = 'welcome.html'
+      c.GCPIAPAuthenticator.secret = request.urlopen('https://www.gstatic.com/iap/verify/public_key').read()
+    # c.GCPIAPAuthenticator.secret = """
     # {
     #   "0oeLcQ" : "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEMdhRXGEoGJLtBjQEIjnYLPkeci9r\nXnca2TffkI0Kac30GhEQd9fuDk4rwQukD/hFw6cUIZKN9HhIZmkGjuO4Rg==\n-----END PUBLIC KEY-----\n",
     #   "LYyP2g" : "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAESlXFFkJ3JxMsXyXNrqzE3ozl/091\n3PmNbccLLWfeQFUYtJqGtl8ESuYxRwc/QwZp5Wcl0HCq6GuFDx4/Tk18Ig==\n-----END PUBLIC KEY-----\n",
@@ -51,17 +44,6 @@ hub:
     #   "mpf0DA" : "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEfHEdeT3a6KaC1kbwov73ZwB/SiUH\nEyKQwUUtMCEn0aJBY6PA+Eic24+WqPEtDKG95elao4VxA+Fne36Sgw1tkg==\n-----END PUBLIC KEY-----\n"
     # }
     # """
-    # extraConfig
-    #   config-jwtauthenticator: |
-    #     from urllib import request
-    #     c.JSONWebTokenLocalAuthenticator.secret = request.urlopen('https://www.gstatic.com/iap/verify/public_key').read()
-    #   allowed_users:
-    #     - aaronliang@google.com
-    #     - aaronliang
-    #     - user4
-    # # ...
-    # DummyAuthenticator:
-    #   password: password
   networkPolicy:
     enabled: false
 
@@ -90,7 +72,7 @@ singleuser:
     limit: 1G
     guarantee: 1G
   cpu:
-    limit: .5
+    limit: .6
     guarantee: .5
   nodeSelector:
     iam.gke.io/gke-metadata-server-enabled: "true"

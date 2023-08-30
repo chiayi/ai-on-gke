@@ -26,6 +26,10 @@ provider "helm" {
   }
 }
 
+data "kubectl_file_documents" "auth-reqs" {
+  pattern = "${path.module}/deployments/*.yaml"
+}
+
 resource "helm_release" "jupyterhub" {
   name       = "jupyterhub"
   repository = "https://jupyterhub.github.io/helm-chart"
@@ -35,8 +39,32 @@ resource "helm_release" "jupyterhub" {
   cleanup_on_fail = "true"
 
   values = [
-    # file("${path.module}/jupyter_config/singleprofile-config.yaml")
     file("${path.module}/jupyter_config/config-selfauth.yaml")
   ]
+}
+
+# three resources here, possibly 4: managed cert, static ingress, backend config, and maybe secret
+# below will attempt to create deployments in /deployments/
+resource "kubectl_manifest" "managed-cert" {
+  for_each = data.kubectl_file_documents.auth-reqs.manifests
+  yaml_body = each.value
+}
+
+resource "kubernetes_secret" "my-secret" {
+  metadata {
+    name = "my-secret"
+    namespace = var.namespace
+  }
+
+  # Omitting type defaults to `Opaque` which is the equivalent of `generic` 
+  data = {
+    "client_id" = var.client_id
+    "client_secret" = var.client_secret
+  }
+}
+# Reserve IP Address
+resource "google_compute_address" "default" {
+  name   = "my-test-static-ip-address"
+  region = "us-central1"
 }
 

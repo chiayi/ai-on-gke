@@ -4,7 +4,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,17 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: jupyter-ingress
-  namespace: ray
-  annotations:
-    kubernetes.io/ingress.global-static-ip-name: "${static_addr_name}"
-    networking.gke.io/managed-certificates: "managed-cert"
-spec:
-  defaultBackend:
-    service:
-      name: proxy-public
-      port:
-        number: 80
+output "service_id" {
+  description = "Service ID"
+  value       = data.google_compute_backend_service.jupyter-ingress.generated_id
+}
+
+output "backend_service" {
+    description = "bkend-service"
+    value = data.google_compute_backend_service.jupyter-ingress
+}

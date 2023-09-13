@@ -45,15 +45,22 @@ build-user:
 	-var service_account=$(SA-ACCOUNT-NAME) \
 	-var namespace=$(NAMESPACE) 
 
-build-jupyterhub: CREATE_NAMESPACE ?= false
+build-jupyterhub: PROJECT ?= $(shell $(current-project))
+build-jupyterhub: CREATE_NAMESPACE ?= true
 build-jupyterhub: NAMESPACE ?= ray
+build-jupyterhub: PROJECT_NUM ?= 1085966111635
 build-jupyterhub: 
 	cd ./ray-on-gke/user/jupyterhub/ \
 	&& terraform apply -auto-approve \
 	-var namespace=$(NAMESPACE) \
 	-var create_namespace=$(CREATE_NAMESPACE) \
-	&& echo "IP of JupyterHub Ednpoint" \
-	&& cd ../../../ && $(MAKE) get-jupyter-ip NAMESAPCE=$(NAMESPACE)
+	-var project_id=$(PROJECT) \
+	-var project_number=$(PROJECT_NUM) \
+	-var client_id=$(CLIENT_ID) \
+	-var client_secret=$(CLIENT_SECRET)
+
+# && echo "IP of JupyterHub Ednpoint" \
+# && cd ../../../ && $(MAKE) get-jupyter-ip NAMESAPCE=$(NAMESPACE)
 
 add-monitoring: PROJECT ?= $(shell $(current-project))
 add-monitoring: NAMESPACE ?= ray

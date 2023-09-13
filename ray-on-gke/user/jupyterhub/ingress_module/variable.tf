@@ -18,10 +18,10 @@ variable "namespace" {
   default     = "<your user name>"
 }
 
-variable "create_namespace" {
-  type = bool
-  description = "Enable creation of jupyterhub namespace if it does not exist"
-  default = false
+variable "project_id" {
+  type        = string
+  description = "GCP project id"
+  default     = "<your project>"
 }
 
 variable "client_id" {
@@ -38,14 +38,16 @@ variable "client_secret" {
   sensitive = true
 }
 
-variable "project_id" {
-  type        = string
-  description = "GCP project id"
-  default     = "<your project>"
+variable "reserved_ip" {
+  type = string
+  description = "Reserved IP Address"
+  default = "<Static ip here>"
+  sensitive = true
 }
 
-variable "project_number" {
-  type        = string
-  description = "GCP project number"
-  default     = "<your project number>"
+variable "reserved_ip_name" {
+  type = string
+  description = "Name of the reserved IP address"
+  default = "<Name of ip here>"
+  sensitive = true
 }

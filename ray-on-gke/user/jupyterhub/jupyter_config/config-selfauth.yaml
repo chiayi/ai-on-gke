@@ -1,3 +1,4 @@
+
 # This file can update the JupyterHub Helm chart's default configuration values.
 #
 # For reference see the configuration reference and default values, but make
@@ -11,13 +12,15 @@ hub:
   image: 
     name: gcr.io/aaronliang-agones-gke-dev/k8s-hub
     tag: latest
+  config: 
+    JupyterHub:
+      authenticator_class: 'gcpiapjwtauthenticator.GCPIAPAuthenticator'
+    GCPIAPAuthenticator: 
+      header_name: 'X-Goog-IAP-JWT-Assertion'
+      expected_audience: '/projects/${project_number}/global/backendServices/${service_id}'
   extraConfig: 
     auth: |
       from urllib import request
-      c.JupyterHub.authenticator_class = 'gcpiapjwtauthenticator.GCPIAPAuthenticator'
-      c.GCPIAPAuthenticator.header_name = 'X-Goog-IAP-JWT-Assertion'
-      c.GCPIAPAuthenticator.expected_audience = '/projects/1085966111635/global/backendServices/3398454410081248856'
-      c.GCPIAPAuthenticator.template_to_render = 'welcome.html'
       c.GCPIAPAuthenticator.secret = request.urlopen('https://www.gstatic.com/iap/verify/public_key').read()
   networkPolicy:
     enabled: false

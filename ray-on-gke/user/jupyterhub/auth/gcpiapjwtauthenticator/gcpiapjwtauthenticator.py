@@ -49,14 +49,6 @@ class IAPUserLoginHandler(BaseHandler):
 
         self.set_login_cookie(user)
         self.redirect(url_path_join(self.hub.server.base_url, 'home'))
-        # self.write(
-        #     self.render_template(
-        #         # self.authenticator.template_to_render,
-        #         url_path_join(self.hub.server.base_url, 'home'),
-        #         user=user,
-        #         next_url=self.get_next_url(user),
-        #     )
-        # )
         
 class GCPIAPAuthenticator(Authenticator):
     """

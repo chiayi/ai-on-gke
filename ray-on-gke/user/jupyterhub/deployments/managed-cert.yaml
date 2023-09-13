@@ -5,4 +5,4 @@ metadata:
   namespace: ray
 spec:
   domains:
-    - 35.201.110.220.nip.io
+    - ${ip_addr}

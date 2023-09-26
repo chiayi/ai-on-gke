@@ -24,8 +24,10 @@ Preinstall the following on your computer:
 
 2. `cd ai-on-gke/gke-platform`
 
-3. Edit `variables.tf` with your GCP settings.
+3. Edit `variables.tf` with your GCP settings. [^1]
 
 4. Run `terraform init`
 
 5. Run `terraform apply`
+
+[^1]: There are three possible values for `gpu_driver_version`, `INSTALLATION_DISABLED`, `DEFAULT`, and `LATEST`. More info [here](https://cloud.google.com/kubernetes-engine/docs/how-to/gpus#create-gpu-pool-auto-drivers)

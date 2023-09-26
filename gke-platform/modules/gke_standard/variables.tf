@@ -52,3 +52,8 @@ variable "enable_tpu" {
   description = "Set to true to create TPU node pool"
   default     = false
 }
+
+variable "gpu_driver_version" {
+  description = "the NVIDIA driver version to install"
+  default = "DEFAULT"
+}

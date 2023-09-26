@@ -77,16 +77,6 @@ module "gke_standard" {
   enable_tpu       = var.enable_tpu
 }
 
-module "kubernetes" {
-  source = "./modules/kubernetes"
-
-  depends_on       = [module.gke_standard]
-  region           = var.region
-  cluster_name     = var.cluster_name
-  enable_autopilot = var.enable_autopilot
-  enable_tpu       = var.enable_tpu
-}
-
 module "kuberay" {
   source = "./modules/kuberay"
 

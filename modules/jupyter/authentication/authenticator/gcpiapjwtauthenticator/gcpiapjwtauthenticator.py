@@ -23,12 +23,37 @@ from urllib import parse
 from google.auth.transport import requests
 from google.oauth2 import id_token
 
+from googleapiclient import discovery
+import google.auth
+
+backend_service_uid = ''
+
+# def get_backend_service(project_id, keyword): 
+#     credentials, _ = google.auth.default()
+#     service = discovery.build('compute', 'v1', credentials=credentials)
+
+#     backend_services = service.backendServices().list(project=project_id).execute()
+
+#     filtered_services = [[service['name'],service['id']] for service in backend_services.get('items', []) if keyword in service['name']]
+#     print("filtered  service: " + filtered_services[0][1])
+#     backend_service_uid = filtered_services[0][1]
+
 class IAPUserLoginHandler(BaseHandler):
     def get(self):
         header_name = self.authenticator.header_name
         
         auth_header_content = self.request.headers.get(header_name, "") if header_name else None
+        print("backend_service_uid: " + backend_service_uid)
+        # while not backend_service_uid:
+        #     print("No backend_service_uid Yet")
+            # get_backend_service("aaronliang-agones-gke-dev", "proxy-public")
+        # format: /projects/{project_number}/global/backendServices/{service_id}
+        # expected_audience = "/projects/" + self.authenticator.project_number + "/global/backendServices/" + backend_service_uid
         expected_audience = self.authenticator.expected_audience
+
+        # filtered_services = get_backend_service("aaronliang-agones-gke-dev", "proxy-public")
+        # logging.info(f'Service: {filtered_services}')
+        # print(filtered_services)
     
         if self.authenticator.header_name != "X-Goog-IAP-JWT-Assertion":
             raise web.HTTPError(400, 'X-Goog-IAP-JWT-Assertion is the only accepted Header')
@@ -103,3 +128,22 @@ def validate_iap_jwt(iap_jwt, expected_audience):
         return (decoded_jwt["sub"], decoded_jwt["email"], "")
     except Exception as e:
         return (None, None, f"JWT validation error {e}")
+
+def main():
+    logging.info(f'in Main and running')
+    print("In MAIN AND RUNNING")
+    while not backend_service_uid:
+        credentials, _ = google.auth.default()
+        service = discovery.build('compute', 'v1', credentials=credentials)
+
+        backend_services = service.backendServices().list(project=project_id).execute()
+
+        filtered_services = [service['name', 'id'] for service in backend_services.get('items', []) if keyword in service['name']]
+
+        if not filtered_services['id']:
+            logging.info(f'found the service')
+            print("found the service desu")
+            backend_service_uid = filtered_services['id']
+
+if __name__ == "__main__":
+    main()

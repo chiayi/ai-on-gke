@@ -32,5 +32,8 @@ setuptools.setup(
         'pyjwt>=1.7.1',
         "google-auth",
         "google-auth-oauthlib",
+        "google-api-python-client",
+        "google-auth-httplib2",
+        "google-cloud==0.34.0",
     ]
 )

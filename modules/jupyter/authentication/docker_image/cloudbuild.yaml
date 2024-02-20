@@ -17,6 +17,6 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: [ 'pull', 'docker.io/jupyterhub/k8s-hub:3.0.0' ]
 - name: 'gcr.io/cloud-builders/docker'
-  args: [ 'build', '-t', '<Artifact Registry Repo Path>/<name of image>', '.' ]
+  args: [ 'build', '-t', 'us-central1-docker.pkg.dev/aaronliang-agones-gke-dev/jupyterhub-image-test/jupyter-auth-class:no-aud', '.' ]
 images:
-- '<Artifact Registry Repo Path>/<name of image>'
+- 'us-central1-docker.pkg.dev/aaronliang-agones-gke-dev/jupyterhub-image-test/jupyter-auth-class'
